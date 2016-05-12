@@ -1,0 +1,36 @@
+spring4.2.5 整合 MyBatis3.3.0
+
+一、整合目标
+    1.将 MyBatis 中的 SqlSessionFactory 回话工厂交给 Spring 来管理，采用方式：单列的方式
+    2.持久层的 mapper 交给 spring管理
+
+二、搭建整合环境
+    1.添加spring jar包，Mybatis jar包，还有spring-myBatis整合包
+        数据库连接驱动包，log4j日志包，使用 dbcp 包 （连接方式），Junit测试包
+
+采用原始 dao 开发方式：
+
+    2.加入spring的配置文件
+        applicationContext.xml,配置数据库连接信息
+        配置 dataSource 和 SqlSessionFactory
+    3.加入mybatis 的配置文件
+        SqlMapConfig.xml,配置 映射文件
+    4.创建 用户封装类 User.java
+    5.在 映射文件 User.xml中配置查询 statement
+    6.(1)创建dao并且创建接口，
+      (2)并创建实现类UserDaoImpl.java,在接口的实现类中要求继承 SqlSessionDaoSupport
+      (3)用spring的容器来管理实现类，将实现类配置到spring的配置文件applicationContext.xml文件中
+
+    7.在 mybatis的配置文件SqlMapConfig.xml中配置加载映射文件
+    8.创建测试代码
+
+采用 mapper 代理开发方式：
+    1.在 UserMapper.xml文件中配置查询 statement
+    2.在 UserMapper.java文件中配置接口
+    3.在 spring 的配置文件中 applicationContext.xml 中采用 MapperFactoryBean来创建代理对象
+    4.测试
+
+    出现问题：这样做需要在 spring的配置文件中配置很多的 mapper，所以采用包扫描的方式来配置
+    使用org.mybatis.spring.mapper.MapperScannerConfigurer配置自动扫描包，在测试中的配置默认 bean 为mapper代理类的类名，首字母小写
+
+
